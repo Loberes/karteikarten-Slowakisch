@@ -7,7 +7,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <title>Slovník</title>
 <style>
-/* Slovník v5.2 */
+/* Slovník v6.9 */
 :root{
   --ac:#6366f1;--acs:#818cf8;--acd:rgba(99,102,241,.15);
   --g:#22c55e;--r:#ef4444;--y:#f59e0b;--cy:#06b6d4;
@@ -44,7 +44,7 @@ a{color:var(--acs);text-decoration:none;}
 .scroll::-webkit-scrollbar{width:4px;}
 .scroll::-webkit-scrollbar-thumb{background:var(--br);border-radius:2px;}
 /* CARD */
-.card{background:var(--b2);border:1px solid var(--br);border-radius:var(--rad);padding:14px 16px;margin-bottom:12px;}
+.card{background:var(--b2);border:1px solid var(--br);border-radius:var(--rad);padding:14px 16px;margin-bottom:12px;overflow-x:hidden;}
 .stit{font-size:11px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:.8px;margin-bottom:10px;}
 /* BUTTONS */
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:10px 18px;border-radius:var(--rads);font-weight:600;font-size:14px;transition:all var(--tr);touch-action:manipulation;}
@@ -207,14 +207,14 @@ input[type=range]{width:100%;accent-color:var(--ac);}
 .st-mtabs{display:flex;gap:0;background:var(--b3);border-radius:10px;padding:3px;margin-bottom:12px;}
 .st-mtab{flex:1;padding:7px 2px;font-size:10px;font-weight:700;text-align:center;border-radius:7px;cursor:pointer;color:var(--t3);transition:all .2s;}
 .st-mtab.on{color:#fff;}
-.st-bar-chart{display:flex;align-items:flex-end;gap:3px;height:110px;}
-.st-bar-col{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%;cursor:pointer;}
+.st-bar-chart{display:flex;align-items:flex-end;gap:3px;height:110px;max-width:100%;}
+.st-bar-col{flex:1;min-width:0;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%;cursor:pointer;}
 .st-bar{width:100%;border-radius:4px 4px 0 0;min-height:3px;transition:all .25s;}
 .st-bar.sel{filter:brightness(1.35);outline:2px solid rgba(255,255,255,.5);outline-offset:1px;}
 .st-bar-val{font-size:8px;color:var(--t3);margin-bottom:2px;opacity:0;transition:opacity .2s;}
 .st-bar-col:hover .st-bar-val,.st-bar-col.sel-col .st-bar-val{opacity:1;}
-.st-xlbls{display:flex;margin-top:5px;}
-.st-xlbl{flex:1;font-size:8px;color:var(--t3);text-align:center;overflow:hidden;}
+.st-xlbls{display:flex;margin-top:5px;max-width:100%;}
+.st-xlbl{flex:1;min-width:0;font-size:8px;color:var(--t3);text-align:center;overflow:hidden;white-space:nowrap;}
 .st-detail{background:var(--b3);border:1px solid var(--br);border-left:3px solid var(--ac);border-radius:var(--rad);margin-top:10px;padding:14px;}
 .st-detail-head{font-size:14px;font-weight:700;margin-bottom:10px;color:var(--acs);display:flex;justify-content:space-between;}
 .st-detail-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
@@ -475,7 +475,7 @@ input[type=range]{width:100%;accent-color:var(--ac);}
 <div id="spo"></div>
 
 <script>
-/* Slovník v5.2 */
+/* Slovník v6.9 */
 // Entfernt einen evtl. hängenden alten Service Worker + Cache aus früheren Versionen,
 // da diese Version selbst keinen Service Worker mehr registriert.
 if('serviceWorker' in navigator){
@@ -483,7 +483,7 @@ if('serviceWorker' in navigator){
 }
 if(window.caches){caches.keys().then(keys=>keys.forEach(k=>caches.delete(k)));}
 
-const VER='6.5';
+const VER='6.9';
 const SK={v:'sv6_vocab',log:'sv6log',langs:'sv6langs',pair:'sv6pair',set:'sv6set',tut:'sv6tut',hid:'sv6_hidden',tc:l=>`sv6_tc_${l}`,tf:l=>`sv6_tf_${l}`};
 
 /* ── I18N ── */
@@ -1070,12 +1070,17 @@ function autoChk(){
   const cNoArt=correct.replace(/^(der|die|das)\s+/i,'');
   const syns=getSyns(card,aSide);
   const acceptedKeep=[correct,cNoArt,...syns].map(normKeepAccents);
-  if(!acceptedKeep.includes(normKeepAccents(typed)))return; // nur exakter Treffer (inkl. Akzente) wird live bestätigt
+  const acceptedFree=[correct,cNoArt,...syns].map(norm);
+  const isDiacriticMatch=acceptedFree.includes(norm(typed));
+  if(!acceptedKeep.includes(normKeepAccents(typed))&&!isDiacriticMatch)return; // exakter Treffer ODER Treffer ohne Akzente wird live bestätigt
 
   const hasArt=/^(der|die|das)\s+/i.test(typed);
   if(hasArt){const tA=typed.match(/^(der|die|das)/i)?.[0].toLowerCase();const cA=card.article?.toLowerCase();if(tA&&cA&&tA!==cA)return;}
   inp.classList.add('ok');
-  const fb=document.getElementById('tyfb');if(fb)fb.innerHTML=`<span style="color:var(--g)">${t('richtigBtn')}</span>`;
+  const fb=document.getElementById('tyfb');
+  if(fb)fb.innerHTML=isDiacriticMatch
+    ? `<span style="color:var(--g)">${t('richtigBtn')}</span><br><span style="font-size:12px;color:var(--t3)">${t('correctIs')}: <strong>${esc(correct)}</strong></span>`
+    : `<span style="color:var(--g)">${t('richtigBtn')}</span>`;
   spk(correct);inp.disabled=true;
   const nx=document.getElementById('tynxt');
   if(nx){nx.style.display='block';nx.innerHTML=`<button class="btn bg blg bw" style="margin-top:8px;" onclick="mark(true)">${t('weiterBtn')}</button>`;}
@@ -1111,19 +1116,21 @@ function chkType(){
 
   const fb=document.getElementById('tyfb');
   const nx=document.getElementById('tynxt');
-  if(tier==='exact'){
+  if(tier==='exact'||tier==='diacritic'){
+    // Tippen: Akzente/Diakritika = 100% Toleranz, kein Stufenabzug — aber Hinweis auf korrekte Schreibweise
     inp.classList.add('ok');
-    fb.innerHTML=`<span style="color:var(--g)">${t('richtigBtn')}</span>`;
+    fb.innerHTML=tier==='diacritic'
+      ? `<span style="color:var(--g)">${t('richtigBtn')}</span><br><span style="font-size:12px;color:var(--t3)">${t('correctIs')}: <strong>${esc(correct)}</strong></span>`
+      : `<span style="color:var(--g)">${t('richtigBtn')}</span>`;
     spk(correct);inp.disabled=true;
     if(nx){nx.style.display='block';nx.innerHTML=`<button class="btn bg blg bw" style="margin-top:8px;" onclick="mark(true)">${t('weiterBtn')}</button>`;}
     return;
   }
-  const stageDrop=tier==='diacritic'?1:tier==='typo'?2:undefined;
-  const msgKey=tier==='diacritic'?'closeDiacritic':tier==='typo'?'closeTypo':'falschBtn';
+  const stageDrop=tier==='typo'?2:undefined;
+  const msgKey=tier==='typo'?'closeTypo':'falschBtn';
   const color=tier==='wrong'?'var(--r)':'var(--y)';
   inp.classList.add(tier==='wrong'?'err':'warn');
   fb.innerHTML=`<span style="color:${color}">${t(msgKey)}</span><br>
-    <span style="font-size:12px;color:var(--t3)">${t('yourInput')}: <strong>${esc(typed)}</strong></span><br>
     <span style="font-size:12px;color:var(--t3)">${t('correctIs')}: <strong>${esc(correct)}</strong></span>`;
   nx.style.display='block';
   nx.innerHTML=`<button class="btn bs" onclick="mark(false${stageDrop!==undefined?','+stageDrop:''})">${t('weiterBtn')}</button>`;
@@ -1166,14 +1173,19 @@ function pickL(id,ch){
     if(typed===target){
       fb.innerHTML=`<span style="color:var(--g)">${t('richtigBtn')} <button class="btn bg bsm" style="margin-left:8px;" onclick="mark(true)">${t('weiterBtn')}</button></span>`;
       spk(target);
+    } else if(norm(typed)===norm(target)){
+      // Reiner Akzentfehler: 100% Toleranz, kein Stufenabzug — Hinweis auf korrekte Schreibweise
+      fb.innerHTML=`<span style="color:var(--g)">${t('richtigBtn')}</span><br>
+        <span style="font-size:12px;color:var(--t3)">${t('correctIs')}: <strong>${esc(target)}</strong></span>
+        <div><button class="btn bg bsm" style="margin-top:8px;" onclick="mark(true)">${t('weiterBtn')}</button></div>`;
+      spk(target);
     } else {
       const dist=editDistance(typed,target);
       const stageDrop=dist===1?2:undefined;
       const msgKey=dist===1?'closeTypo':'falschBtn';
       const color=dist===1?'var(--y)':'var(--r)';
       fb.innerHTML=`<div style="color:${color}">${t(msgKey)}</div>
-        <div style="font-size:12px;color:var(--t3);font-weight:400;margin-top:4px;">${t('yourInput')}: <strong>${esc(typed)}</strong></div>
-        <div style="font-size:12px;color:var(--t3);font-weight:400;">${t('correctIs')}: <strong>${esc(target)}</strong></div>
+        <div style="font-size:12px;color:var(--t3);font-weight:400;margin-top:4px;">${t('correctIs')}: <strong>${esc(target)}</strong></div>
         <button class="btn ${dist===1?'bs':'br2'} bsm" style="margin-top:8px;" onclick="mark(false${stageDrop!==undefined?','+stageDrop:''})">${t('weiterBtn')}</button>`;
     }
   }
