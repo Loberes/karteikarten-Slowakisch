@@ -10,7 +10,7 @@
 /* Slovník v5.2 */
 :root{
   --ac:#6366f1;--acs:#818cf8;--acd:rgba(99,102,241,.15);
-  --g:#22c55e;--r:#ef4444;--y:#f59e0b;
+  --g:#22c55e;--r:#ef4444;--y:#f59e0b;--cy:#06b6d4;
   --b:#0f0f1a;--b2:#1a1a2e;--b3:#242438;--b4:#2e2e48;
   --t:#e2e8f0;--t2:#94a3b8;--t3:#64748b;
   --br:rgba(255,255,255,.08);--rad:12px;--rads:8px;
@@ -338,12 +338,20 @@ input[type=range]{width:100%;accent-color:var(--ac);}
         <div id="trs" class="trs" style="display:none;"></div>
       </div>
       <div class="fld">
-        <label data-i18n="synonyms">Synonyme (kommagetrennt)</label>
-        <input type="text" id="add-syn" placeholder="Syn1, Syn2">
+        <label data-i18n="synNative">Synonyme (Muttersprache)</label>
+        <input type="text" id="add-syn-nat" placeholder="Syn1, Syn2">
       </div>
       <div class="fld">
-        <label data-i18n="note">Notiz / Eselsbrücke</label>
-        <textarea id="add-note" placeholder="Eselsbrücke…" data-i18n-ph="notePh"></textarea>
+        <label data-i18n="synForeign">Synonyme (Fremdsprache)</label>
+        <input type="text" id="add-syn-for" placeholder="Syn1, Syn2" data-i18n-ph="synForeignPh">
+      </div>
+      <div class="fld">
+        <label data-i18n="noteNative">Notiz (Muttersprache)</label>
+        <textarea id="add-note-nat" placeholder="Nur bei Muttersprache sichtbar…"></textarea>
+      </div>
+      <div class="fld">
+        <label data-i18n="noteForeign">Notiz (Fremdsprache)</label>
+        <textarea id="add-note-for" placeholder="Nur bei Fremdsprache sichtbar…" data-i18n-ph="noteForeignPh"></textarea>
       </div>
       <button class="btn bp bw" onclick="addVocab()" data-i18n="addBtn">✓ Hinzufügen</button>
     </div>
@@ -389,7 +397,7 @@ input[type=range]{width:100%;accent-color:var(--ac);}
     <div class="card">
       <div class="stit" data-i18n="addPairSection">Sprachpaar hinzufügen</div>
       <div class="fld"><label data-i18n="nativeLang">Muttersprache</label>
-        <select id="np-nat"><option value="de">🇩🇪 Deutsch</option><option value="en">🇬🇧 Englisch</option></select></div>
+        <select id="np-nat"><option value="de">🇩🇪 Deutsch</option><option value="en">🇬🇧 Englisch</option><option value="sk">🇸🇰 Slovenčina</option></select></div>
       <div class="fld"><label data-i18n="targetLangLbl">Zielsprache (Kürzel)</label>
         <input type="text" id="np-tgt" placeholder="sk, hu, fr, it, pl …" data-i18n-ph="targetLangPh" maxlength="5"></div>
       <button class="btn bs" onclick="addPair()" data-i18n="addBtnShort">Hinzufügen</button>
@@ -474,7 +482,7 @@ if('serviceWorker' in navigator){
 }
 if(window.caches){caches.keys().then(keys=>keys.forEach(k=>caches.delete(k)));}
 
-const VER='6.0';
+const VER='6.4';
 const SK={v:'sv6_vocab',log:'sv6log',langs:'sv6langs',pair:'sv6pair',set:'sv6set',tut:'sv6tut',hid:'sv6_hidden',tc:l=>`sv6_tc_${l}`,tf:l=>`sv6_tf_${l}`};
 
 /* ── I18N ── */
@@ -522,6 +530,9 @@ de:{
   tutTexts:['Streak 🔥, fällige Vokabeln, Sprachpaar-Wechsel und Einstellungen.','Zwischen Lernen, Hinzufügen, Vokabelliste, Packs und Statistik wechseln.','Schnell: zufälliger Kartenmodus (Flip/Tippen/Buchstaben). Gezielt: Deep Learn mit einstellbarer Wiederholzahl.','Gesamtzahl deiner Vokabeln und heute fällige Karten.','Balkendiagramm: Verteilung auf alle 8 Lernstufen.','Externe Vokabelpacks laden, Daten exportieren und importieren.'],
   tutSkip:'Überspringen',tutNext:'Weiter →',tutDone:'Fertig ✓',tutFinished:'Tutorial abgeschlossen! 🎉',
   labelArt:'Artikel',labelNat:'Muttersprache',labelFor:'Fremdsprache',labelSyn:'Synonyme',labelNote:'Notiz',correctIs:'Richtig',
+  synNative:'Synonyme (Muttersprache)',synForeign:'Synonyme (Fremdsprache)',
+  noteNative:'Notiz (Muttersprache)',noteForeign:'Notiz (Fremdsprache)',
+  synForeignPh:'Syn1, Syn2',noteForeignPh:'Nur bei Fremdsprache sichtbar…',
   srsNames:['Neu','1 Tag','1 Woche','1 Monat','2 Monate','6 Monate','1 Jahr','Gelernt'],
   kpiWordsLearned:'Wörter gelernt',kpiAvgPerDay:'Ø pro Lerntag',kpiCorrectRate:'Richtig-Quote',kpiBestDay:'Bester Tag',
   mWords:'Wörter',mRatio:'Quote',
@@ -579,6 +590,9 @@ en:{
   tutTexts:['Streak 🔥, due words, language pair switch and settings.','Switch between Learn, Add, Word list, Packs and Stats.','Quick: random card mode (flip/type/letters). Focused: Deep learn with adjustable repeat count.','Total number of words and how many are due today.','Bar chart: distribution across all 8 learning stages.','Load external vocab packs, export and import data.'],
   tutSkip:'Skip',tutNext:'Next →',tutDone:'Done ✓',tutFinished:'Tutorial completed! 🎉',
   labelArt:'Article',labelNat:'Native language',labelFor:'Foreign language',labelSyn:'Synonyms',labelNote:'Note',correctIs:'Correct',
+  synNative:'Synonyms (native language)',synForeign:'Synonyms (foreign language)',
+  noteNative:'Note (native language)',noteForeign:'Note (foreign language)',
+  synForeignPh:'Syn1, Syn2',noteForeignPh:'Only shown for the foreign word…',
   srsNames:['New','1 day','1 week','1 month','2 months','6 months','1 year','Learned'],
   kpiWordsLearned:'Words learned',kpiAvgPerDay:'Avg per active day',kpiCorrectRate:'Correct rate',kpiBestDay:'Best day',
   mWords:'Words',mRatio:'Rate',
@@ -636,6 +650,9 @@ sk:{
   tutTexts:['Séria 🔥, slovíčka na opakovanie, prepínanie jazykových párov a nastavenia.','Prepínanie medzi Učiť sa, Pridať, Zoznam slov, Balíčky a Štatistika.','Rýchlo: náhodný režim kariet (otočiť/písať/písmená). Cielené: hlboké učenie s nastaviteľným počtom opakovaní.','Celkový počet slovíčok a koľko ich je dnes na opakovanie.','Stĺpcový graf: rozdelenie do všetkých 8 úrovní učenia.','Načítanie externých balíčkov, export a import dát.'],
   tutSkip:'Preskočiť',tutNext:'Ďalej →',tutDone:'Hotovo ✓',tutFinished:'Tutoriál dokončený! 🎉',
   labelArt:'Člen',labelNat:'Materinský jazyk',labelFor:'Cudzí jazyk',labelSyn:'Synonymá',labelNote:'Poznámka',correctIs:'Správne',
+  synNative:'Synonymá (materinský jazyk)',synForeign:'Synonymá (cudzí jazyk)',
+  noteNative:'Poznámka (materinský jazyk)',noteForeign:'Poznámka (cudzí jazyk)',
+  synForeignPh:'Syn1, Syn2',noteForeignPh:'Zobrazí sa len pri cudzom slove…',
   srsNames:['Nové','1 deň','1 týždeň','1 mesiac','2 mesiace','6 mesiacov','1 rok','Naučené'],
   kpiWordsLearned:'Naučené slovíčka',kpiAvgPerDay:'Ø na deň učenia',kpiCorrectRate:'Úspešnosť',kpiBestDay:'Najlepší deň',
   mWords:'Slovíčka',mRatio:'Kvóta',
@@ -884,10 +901,10 @@ function renderCard(){
   const a=dir===0?card.foreign:card.native;
 
   if(LS.mode==='deep'&&LS.phase===1){
-
+    const qSide=dir===0?'native':'foreign';
     document.getElementById('lbody').innerHTML=`
       <div class="fcw"><div class="fc flip" id="thefc">
-        <div class="ff front"><div class="fw">${esc(q)}</div>${card.notes?`<div class="fn">💡 ${esc(card.notes)}</div>`:''}</div>
+        <div class="ff front"><div class="fw">${esc(q)}</div>${getNotes(card,qSide)?`<div class="fn">💡 ${esc(getNotes(card,qSide))}</div>`:''}</div>
         <div class="ff back"><div class="fw">${esc(a)}</div>${dir===0&&card.article?`<div class="fart">${esc(card.article)}</div>`:''}</div>
       </div></div>
       <div class="abts"><button class="btn bp blg bw" onclick="dp2()">${t('weiterBtn')}</button></div>`;
@@ -937,18 +954,22 @@ function dp2(){LS.phase=2;const c=LS.queue[0];renderFlip(c,LS.dir===0?c.native:c
 
 /* FLIP */
 function renderFlip(card,q,a,dir){
+  const qSide=dir===0?'native':'foreign';
+  const aSide=dir===0?'foreign':'native';
+  const qNotes=getNotes(card,qSide);
+  const aSyns=getSyns(card,aSide);
   document.getElementById('lbody').innerHTML=`
     <div class="fcw" onclick="flipIt()">
       <div class="fc" id="thefc">
         <div class="ff front">
           <div class="fw">${esc(q)}</div>
-          ${card.notes?`<div class="fn">💡 ${esc(card.notes)}</div>`:''}
+          ${qNotes?`<div class="fn">💡 ${esc(qNotes)}</div>`:''}
           <div style="margin-top:12px;font-size:12px;color:var(--t3)">${t('tapToFlip')}</div>
         </div>
         <div class="ff back">
           <div class="fw">${esc(a)}</div>
           ${dir===0&&card.article?`<div class="fart">${esc(card.article)}</div>`:''}
-          ${card.synonyms?.length?`<div class="fs">~ ${card.synonyms.join(', ')}</div>`:''}
+          ${aSyns.length?`<div class="fs">~ ${aSyns.join(', ')}</div>`:''}
         </div>
       </div>
     </div>
@@ -971,10 +992,12 @@ function flipIt(){
 
 /* TYPE */
 function renderType(card,q,a,dir){
+  const qSide=dir===0?'native':'foreign';
+  const qNotes=getNotes(card,qSide);
   document.getElementById('lbody').innerHTML=`
     <div class="tyc">
       <div class="tyq">${esc(q)}</div>
-      ${card.notes?`<div class="fn" style="margin-bottom:12px;">💡 ${esc(card.notes)}</div>`:''}
+      ${qNotes?`<div class="fn" style="margin-bottom:12px;">💡 ${esc(qNotes)}</div>`:''}
       <div class="tyr">
         <input type="text" id="tyin" placeholder="Antwort…" data-i18n-ph="answerPh" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"
           oninput="autoChk()" onkeydown="if(event.key==='Enter')chkType()">
@@ -989,6 +1012,17 @@ function renderType(card,q,a,dir){
   setTimeout(()=>{document.getElementById('tyin')?.focus();applyI18N();},100);
 }
 
+/* Sprachspezifische Notizen/Synonyme mit Fallback auf alte (ungetrennte) Felder */
+function getNotes(card,side){
+  const key=side==='native'?'notesNative':'notesForeign';
+  if(card[key]!==undefined) return card[key]||'';
+  return card.notes||'';
+}
+function getSyns(card,side){
+  const key=side==='native'?'synonymsNative':'synonymsForeign';
+  if(card[key]!==undefined) return card[key]||[];
+  return card.synonyms||[];
+}
 function norm(s){
   return(s||'').toLowerCase()
     .normalize('NFD').replace(/[\u0300-\u036f]/g,'') 
@@ -1002,8 +1036,9 @@ function autoChk(){
   const typed=inp.value.trim();if(!typed)return;
   const card=LS.queue[0];const dir=LS.dir;
   const correct=dir===0?card.foreign:card.native;
+  const aSide=dir===0?'foreign':'native';
   const cNoArt=correct.replace(/^(der|die|das)\s+/i,'');
-  const syns=card.synonyms||[];
+  const syns=getSyns(card,aSide);
   const all=[correct,cNoArt,...syns].map(norm);
   if(!all.includes(norm(typed)))return;
 
@@ -1020,7 +1055,8 @@ function chkType(){
   const typed=inp.value.trim();if(!typed)return;
   const card=LS.queue[0];const dir=LS.dir;
   const correct=dir===0?card.foreign:card.native;
-  const syns=card.synonyms||[];
+  const aSide=dir===0?'foreign':'native';
+  const syns=getSyns(card,aSide);
   const cNoArt=correct.replace(/^(der|die|das)\s+/i,'');
   const all=[correct,cNoArt,...syns].map(norm);
   const hasArt=/^(der|die|das)\s+/i.test(typed);
@@ -1045,6 +1081,8 @@ function chkType(){
 
 /* LETTERS */
 function renderLetters(card,q,a,dir){
+  const qSide=dir===0?'native':'foreign';
+  const qNotes=getNotes(card,qSide);
   const target=dir===0?card.foreign:card.native;
   const letters=[...target].map((c,i)=>({c,i}));
   const shuf=shuffle([...letters]);
@@ -1053,7 +1091,7 @@ function renderLetters(card,q,a,dir){
   document.getElementById('lbody').innerHTML=`
     <div class="ltc">
       <div class="ltq">${esc(q)}</div>
-      ${card.notes?`<div class="fn" style="margin-bottom:10px;">💡 ${esc(card.notes)}</div>`:''}
+      ${qNotes?`<div class="fn" style="margin-bottom:10px;">💡 ${esc(qNotes)}</div>`:''}
       <div class="ltsl" id="ltsl">${slots}</div>
       <div class="ltti">${tiles}</div>
       <div style="text-align:center;font-size:14px;font-weight:600;min-height:22px;margin-top:8px;" id="ltfb"></div>
@@ -1231,7 +1269,7 @@ function mark(ok){
     LS.dir=0;
     if(LS.mode==='deep') LS.phase=1;
   }
-  saveVocab();logLearn(ok);renderCard();
+  saveVocab();logLearn(ok,key);renderCard();
 }
 
 function showDone(){
@@ -1244,7 +1282,7 @@ function showDone(){
       <div style="font-size:14px;color:var(--t2);margin-bottom:24px;">${t('wordsCompleted')(LS.total)}</div>
       <button class="btn bp blg" onclick="exitLearn()">${t('backBtn')}</button>
     </div>`;
-  saveVocab();logLearn();
+  saveVocab();
 }
 
 /* ── EDIT DURING LEARN ── */
@@ -1386,12 +1424,17 @@ function addVocab(){
   const natClean=sp.n; 
   let art=document.getElementById('add-art').value||sp.a;
   if(sp.a&&!document.getElementById('add-art').value) document.getElementById('add-art').value=sp.a;
-  const syn=document.getElementById('add-syn').value.split(',').map(s=>s.trim()).filter(Boolean);
-  const note=document.getElementById('add-note').value.trim();
+  const synNative=document.getElementById('add-syn-nat').value.split(',').map(s=>s.trim()).filter(Boolean);
+  const synForeign=document.getElementById('add-syn-for').value.split(',').map(s=>s.trim()).filter(Boolean);
+  const noteNative=document.getElementById('add-note-nat').value.trim();
+  const noteForeign=document.getElementById('add-note-for').value.trim();
   if(S.vocab.find(v=>splitArticle(v.native).n.toLowerCase()===natClean.toLowerCase())){toast(t('alreadyExistsToast'));return;}
-  S.vocab.push({native:natClean,foreign:fr,article:art,synonyms:syn,notes:note,stage:0,lastReviewed:0,created:Date.now(),stats:{correct:0,wrong:0}});
+  S.vocab.push({native:natClean,foreign:fr,article:art,
+    synonymsNative:synNative,synonymsForeign:synForeign,
+    notesNative:noteNative,notesForeign:noteForeign,
+    stage:0,lastReviewed:0,created:Date.now(),stats:{correct:0,wrong:0}});
   saveVocab();toast(t('addedMsg'));
-  ['add-nat','add-for','add-syn','add-note'].forEach(id=>document.getElementById(id).value='');
+  ['add-nat','add-for','add-syn-nat','add-syn-for','add-note-nat','add-note-for'].forEach(id=>document.getElementById(id).value='');
   document.getElementById('add-art').value='';
   hideAC();document.getElementById('trs').style.display='none';
   document.getElementById('dupw').style.display='none';
@@ -1476,8 +1519,10 @@ function editVocab(i,fromLearn=false){
       </select></div>
     <div class="fld"><label>${t('labelNat')}</label><input type="text" id="e-nat" value="${esc(v.native)}"></div>
     <div class="fld"><label>${t('labelFor')}</label><input type="text" id="e-for" value="${esc(v.foreign)}"></div>
-    <div class="fld"><label>${t('labelSyn')}</label><input type="text" id="e-syn" value="${esc((v.synonyms||[]).join(', '))}"></div>
-    <div class="fld"><label>${t('labelNote')}</label><textarea id="e-note">${esc(v.notes||'')}</textarea></div>
+    <div class="fld"><label>${t('synNative')}</label><input type="text" id="e-syn-nat" value="${esc(getSyns(v,'native').join(', '))}"></div>
+    <div class="fld"><label>${t('synForeign')}</label><input type="text" id="e-syn-for" value="${esc(getSyns(v,'foreign').join(', '))}"></div>
+    <div class="fld"><label>${t('noteNative')}</label><textarea id="e-note-nat">${esc(getNotes(v,'native'))}</textarea></div>
+    <div class="fld"><label>${t('noteForeign')}</label><textarea id="e-note-for">${esc(getNotes(v,'foreign'))}</textarea></div>
     <div class="fld"><label>${t('srsStageLbl')}</label><input type="number" id="e-stg" min="0" max="7" value="${v.stage||0}"></div>
     <button class="btn bp bw" onclick="saveEdit(${i},${fromLearn})">${t('saveBtn')}</button>
   `);
@@ -1488,8 +1533,10 @@ function saveEdit(i,fromLearn){
   v.article=document.getElementById('e-art').value;
   v.native=document.getElementById('e-nat').value.trim();
   v.foreign=document.getElementById('e-for').value.trim();
-  v.synonyms=document.getElementById('e-syn').value.split(',').map(s=>s.trim()).filter(Boolean);
-  v.notes=document.getElementById('e-note').value.trim();
+  v.synonymsNative=document.getElementById('e-syn-nat').value.split(',').map(s=>s.trim()).filter(Boolean);
+  v.synonymsForeign=document.getElementById('e-syn-for').value.split(',').map(s=>s.trim()).filter(Boolean);
+  v.notesNative=document.getElementById('e-note-nat').value.trim();
+  v.notesForeign=document.getElementById('e-note-for').value.trim();
   v.stage=Math.min(7,Math.max(0,parseInt(document.getElementById('e-stg').value)||0));
   saveVocab();closeMod();
   if(fromLearn) renderCard();
@@ -1588,7 +1635,7 @@ async function impWord(pi,wi){
   const sp2=splitArticle(nat);
   const natC=sp2.n; const artC=w.a||w.article||sp2.a||'';
   if(S.vocab.find(v=>splitArticle(v.native).n.toLowerCase()===natC.toLowerCase())){toast(t('alreadyExistsToast'));return;}
-  S.vocab.push({native:natC,foreign:fr,article:artC,synonyms:[],notes:w.notes||'',stage:0,lastReviewed:0,created:Date.now(),stats:{correct:0,wrong:0}});
+  S.vocab.push({native:natC,foreign:fr,article:artC,synonymsNative:[],synonymsForeign:[],notesNative:'',notesForeign:w.notes||'',stage:0,lastReviewed:0,created:Date.now(),stats:{correct:0,wrong:0}});
   saveVocab();updateTB();
 
   const btn=event.target;btn.textContent='✓';btn.disabled=true;btn.className='btn bs bsm';
@@ -1604,7 +1651,7 @@ async function impPack(i){
     const nat=w.n||w.native||'';const fr=w.f||w.foreign||'';
     if(!nat||!fr){skipped++;return;}
     if(S.vocab.find(v=>v.native.toLowerCase()===nat.toLowerCase())){skipped++;return;}
-    S.vocab.push({native:nat,foreign:fr,article:w.a||w.article||'',synonyms:[],notes:w.notes||'',stage:0,lastReviewed:0,created:Date.now(),stats:{correct:0,wrong:0}});
+    S.vocab.push({native:nat,foreign:fr,article:w.a||w.article||'',synonymsNative:[],synonymsForeign:[],notesNative:'',notesForeign:w.notes||'',stage:0,lastReviewed:0,created:Date.now(),stats:{correct:0,wrong:0}});
     added++;
   });
   fixArticles(S.vocab);saveVocab();renderPacks();updateTB();toast(t('importedSkipped')(added,skipped));
@@ -1645,8 +1692,8 @@ function expJSON(){
 }
 
 function expCSV(){
-  const hdr=['native','foreign','article','synonyms','notes','stage','lastReviewed','correct','wrong'];
-  const rows=S.vocab.map(v=>[v.native,v.foreign,v.article||'',(v.synonyms||[]).join(';'),v.notes||'',v.stage||0,v.lastReviewed||0,v.stats?.correct||0,v.stats?.wrong||0].map(c=>`"${String(c).replace(/"/g,'""')}"`).join(','));
+  const hdr=['native','foreign','article','synonymsNative','synonymsForeign','notesNative','notesForeign','stage','lastReviewed','correct','wrong'];
+  const rows=S.vocab.map(v=>[v.native,v.foreign,v.article||'',getSyns(v,'native').join(';'),getSyns(v,'foreign').join(';'),getNotes(v,'native'),getNotes(v,'foreign'),v.stage||0,v.lastReviewed||0,v.stats?.correct||0,v.stats?.wrong||0].map(c=>`"${String(c).replace(/"/g,'""')}"`).join(','));
   dl([hdr.join(','),...rows].join('\n'),`slovnik_${new Date().toISOString().slice(0,10)}.csv`,'text/csv');
 }
 
@@ -1677,6 +1724,11 @@ function mergeWord(existing,w){
   const art=w.article||w.a||sp.a||'';
   if(!nat||(!(w.foreign||w.f)))return 0;
 
+  const wSynNat=w.synonymsNative||w.synonyms||[];
+  const wSynFor=w.synonymsForeign||w.synonyms||[];
+  const wNoteNat=w.notesNative!==undefined?w.notesNative:w.notes;
+  const wNoteFor=w.notesForeign!==undefined?w.notesForeign:w.notes;
+
   const ei=existing.findIndex(e=>{
     const esn=splitArticle(e.native).n.toLowerCase();
     return esn===nat||e.native.toLowerCase()===nat;
@@ -1689,14 +1741,16 @@ function mergeWord(existing,w){
     const esn=splitArticle(e.native);
     if(esn.a){e.article=e.article||esn.a;e.native=esn.n;}
     if(art&&!e.article) e.article=art;
-    if(w.notes&&!e.notes) e.notes=w.notes;
-    (w.synonyms||[]).forEach(s=>{if(!(e.synonyms||[]).includes(s))(e.synonyms=e.synonyms||[]).push(s);});
+    if(wNoteNat&&!getNotes(e,'native')) e.notesNative=wNoteNat;
+    if(wNoteFor&&!getNotes(e,'foreign')) e.notesForeign=wNoteFor;
+    wSynNat.forEach(s=>{const cur=getSyns(e,'native');if(!cur.includes(s)){e.synonymsNative=[...cur,s];}});
+    wSynFor.forEach(s=>{const cur=getSyns(e,'foreign');if(!cur.includes(s)){e.synonymsForeign=[...cur,s];}});
     return 0; 
   }
   existing.push({
     native:sp.n||w.native||w.n||'',foreign:w.foreign||w.f||'',
-    article:art,synonyms:w.synonyms||[],
-    notes:w.notes||'',stage:w.stage||0,
+    article:art,synonymsNative:wSynNat,synonymsForeign:wSynFor,
+    notesNative:wNoteNat||'',notesForeign:wNoteFor||'',stage:w.stage||0,
     lastReviewed:w.lastReviewed||0,stats:w.stats||{correct:0,wrong:0}
   });
   return 1; 
@@ -1833,7 +1887,13 @@ function renderStKPI(slice){
   const full=lg(SK.log)||[];
   const prevWords=stTime>0?(()=>{
     const prevStart=dayKey(Date.now())-stTime*2*86400000,prevEnd=dayKey(Date.now())-stTime*86400000;
-    return full.filter(e=>{const k=logT(e);return k>=prevStart&&k<prevEnd;}).length;
+    const wset=new Set();let legacy=0;
+    full.forEach(e=>{
+      const k=logT(e);if(k<prevStart||k>=prevEnd)return;
+      const w=typeof e==='object'?e.w:null;
+      if(w) wset.add(w); else legacy++;
+    });
+    return wset.size+legacy;
   })():0;
   const diff=prevWords>0?Math.round((total-prevWords)/prevWords*100):0;
 
@@ -1902,7 +1962,7 @@ function renderStDetail(d){
       <div class="st-dbox"><div class="st-dbox-val" style="color:var(--g)">${d.correct}</div><div class="st-dbox-lbl">${t('correct')}</div></div>
       <div class="st-dbox"><div class="st-dbox-val" style="color:var(--r)">${d.wrong}</div><div class="st-dbox-lbl">${t('wrong')}</div></div>
       <div class="st-dbox"><div class="st-dbox-val" style="color:var(--cy)">${d.new}</div><div class="st-dbox-lbl">${t('newWordsLbl')}</div></div>
-      <div class="st-dbox"><div class="st-dbox-val" style="color:var(--t2)">${d.words>0?d.correct+d.wrong+'×':'—'}</div><div class="st-dbox-lbl">${t('totalQueries')}</div></div>
+      <div class="st-dbox"><div class="st-dbox-val" style="color:var(--t2)">${d.attempts>0?d.attempts+'×':'—'}</div><div class="st-dbox-lbl">${t('totalQueries')}</div></div>
     </div>`;
 }
 
@@ -1942,8 +2002,8 @@ function calcStreak(){
   return str;
 }
 
-function logLearn(ok){
-  const log=lg(SK.log)||[];log.push({t:Date.now(),ok:ok!==false});
+function logLearn(ok,key){
+  const log=lg(SK.log)||[];log.push({t:Date.now(),ok:ok!==false,w:key||null});
   ls(SK.log,log.filter(d=>logT(d)>Date.now()-365*86400000));
 }
 
@@ -1962,23 +2022,27 @@ function buildDayData(nDays){
       date:d,dt,
       label:`${String(d.getDate()).padStart(2,'0')}.${String(d.getMonth()+1).padStart(2,'0')}`,
       weekday:wd[d.getDay()],
-      words:0,correct:0,wrong:0,new:0,
+      words:0,correct:0,wrong:0,new:0,attempts:0,
+      _wset:new Set(),
     });
   }
   const idx=new Map(days.map((d,i)=>[d.dt,i]));
   log.forEach(e=>{
     const k=dayKey(logT(e));
     const i=idx.get(k);if(i===undefined)return;
-    days[i].words++;
+    days[i].attempts++;
+    const w=typeof e==='object'?e.w:null;
+    if(w) days[i]._wset.add(w); else days[i].words++; // legacy entries w/o word key: count individually
     if((typeof e==='object'?e.ok:true)) days[i].correct++; else days[i].wrong++;
   });
+  days.forEach(d=>{d.words+=d._wset.size;delete d._wset;});
   S.vocab.forEach(v=>{
     if(!v.created)return;
     const k=dayKey(v.created);
     const i=idx.get(k);if(i===undefined)return;
     days[i].new++;
   });
-  days.forEach(d=>{d.ratio=d.words>0?Math.round(d.correct/d.words*100):0;});
+  days.forEach(d=>{d.ratio=d.attempts>0?Math.round(d.correct/d.attempts*100):0;});
   return days;
 }
 
