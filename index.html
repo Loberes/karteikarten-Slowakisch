@@ -7,7 +7,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <title>Slovník</title>
 <style>
-/* Slovník v6.21 */
+/* Slovník v6.9 */
 :root{
   --ac:#6366f1;--acs:#818cf8;--acd:rgba(99,102,241,.15);
   --g:#22c55e;--r:#ef4444;--y:#f59e0b;--cy:#06b6d4;
@@ -23,7 +23,7 @@ html,body{height:100%;background:var(--b);color:var(--t);font-family:var(--font)
 button{cursor:pointer;border:none;outline:none;background:none;color:inherit;font:inherit;}
 input,select,textarea{font:inherit;color:inherit;background:none;border:none;outline:none;}
 a{color:var(--acs);text-decoration:none;}
-#app{display:flex;flex-direction:column;height:100vh;height:100dvh;max-width:480px;margin:0 auto;position:relative;}
+#app{display:flex;flex-direction:column;height:100vh;max-width:480px;margin:0 auto;position:relative;}
 .scr{display:none;flex-direction:column;flex:1;overflow:hidden;}
 .scr.on{display:flex;}
 /* TOPBAR */
@@ -44,7 +44,7 @@ a{color:var(--acs);text-decoration:none;}
 .scroll::-webkit-scrollbar{width:4px;}
 .scroll::-webkit-scrollbar-thumb{background:var(--br);border-radius:2px;}
 /* CARD */
-.card{background:var(--b2);border:1px solid var(--br);border-radius:var(--rad);padding:14px 16px;margin-bottom:12px;}
+.card{background:var(--b2);border:1px solid var(--br);border-radius:var(--rad);padding:14px 16px;margin-bottom:12px;overflow-x:hidden;}
 .stit{font-size:11px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:.8px;margin-bottom:10px;}
 /* BUTTONS */
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:10px 18px;border-radius:var(--rads);font-weight:600;font-size:14px;transition:all var(--tr);touch-action:manipulation;}
@@ -65,8 +65,8 @@ a{color:var(--acs);text-decoration:none;}
 .sb .num{font-size:28px;font-weight:800;color:var(--acs);}
 .sb .lbl{font-size:11px;color:var(--t3);margin-top:2px;}
 /* SRS CHART */
-.srs-ch{display:flex;align-items:flex-end;gap:5px;margin:12px 0 6px;background:var(--b3);border:1px solid var(--br);border-radius:8px;padding:10px 6px;}
-.srs-bw{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;justify-content:flex-end;}
+.srs-ch{display:flex;align-items:flex-end;gap:4px;height:60px;margin:10px 0 4px;}
+.srs-bw{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;height:100%;justify-content:flex-end;}
 .srs-b{width:100%;border-radius:3px 3px 0 0;min-height:3px;transition:height .4s ease;}
 .srs-bl{font-size:9px;color:var(--t3);}
 /* MODE BUTTONS */
@@ -188,8 +188,8 @@ a{color:var(--acs);text-decoration:none;}
 .prow{display:flex;align-items:center;justify-content:center;gap:10px;margin-top:12px;}
 .pbtn{background:var(--b3);border:1px solid var(--br);border-radius:6px;width:32px;height:32px;font-size:14px;display:flex;align-items:center;justify-content:center;}
 .pinf{font-size:13px;color:var(--t2);}
-.sleg{display:flex;gap:6px 10px;flex-wrap:wrap;margin-top:10px;}
-.slegi{display:flex;align-items:center;gap:5px;font-size:11px;color:var(--t3);}
+.sleg{display:flex;gap:4px;flex-wrap:wrap;margin-top:8px;}
+.slegi{display:flex;align-items:center;gap:4px;font-size:10px;color:var(--t3);}
 .sdot{width:8px;height:8px;border-radius:50%;}
 input[type=range]{width:100%;accent-color:var(--ac);}
 .pair-bar{padding:5px 16px;background:var(--b2);border-bottom:1px solid var(--br);font-size:12px;color:var(--t2);flex-shrink:0;}
@@ -207,13 +207,13 @@ input[type=range]{width:100%;accent-color:var(--ac);}
 .st-mtabs{display:flex;gap:0;background:var(--b3);border-radius:10px;padding:3px;margin-bottom:12px;}
 .st-mtab{flex:1;padding:7px 2px;font-size:10px;font-weight:700;text-align:center;border-radius:7px;cursor:pointer;color:var(--t3);transition:all .2s;}
 .st-mtab.on{color:#fff;}
-.st-bar-chart{display:flex;align-items:flex-end;gap:3px;background:var(--b3);border:1px solid var(--br);border-radius:8px;padding:10px 6px;}
-.st-bar-col{flex:1;min-width:0;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;cursor:pointer;}
+.st-bar-chart{display:flex;align-items:flex-end;gap:3px;height:110px;max-width:100%;}
+.st-bar-col{flex:1;min-width:0;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%;cursor:pointer;}
 .st-bar{width:100%;border-radius:4px 4px 0 0;min-height:3px;transition:all .25s;}
 .st-bar.sel{filter:brightness(1.35);outline:2px solid rgba(255,255,255,.5);outline-offset:1px;}
 .st-bar-val{font-size:8px;color:var(--t3);margin-bottom:2px;opacity:0;transition:opacity .2s;}
 .st-bar-col:hover .st-bar-val,.st-bar-col.sel-col .st-bar-val{opacity:1;}
-.st-xlbls{display:flex;margin-top:5px;}
+.st-xlbls{display:flex;margin-top:5px;max-width:100%;}
 .st-xlbl{flex:1;min-width:0;font-size:8px;color:var(--t3);text-align:center;overflow:hidden;white-space:nowrap;}
 .st-detail{background:var(--b3);border:1px solid var(--br);border-left:3px solid var(--ac);border-radius:var(--rad);margin-top:10px;padding:14px;}
 .st-detail-head{font-size:14px;font-weight:700;margin-bottom:10px;color:var(--acs);display:flex;justify-content:space-between;}
@@ -222,7 +222,7 @@ input[type=range]{width:100%;accent-color:var(--ac);}
 .st-dbox-val{font-size:20px;font-weight:800;}
 .st-dbox-lbl{font-size:10px;color:var(--t3);margin-top:2px;}
 .st-close-btn{font-size:16px;color:var(--t3);cursor:pointer;line-height:1;}
-.st-day-item{display:flex;align-items:center;gap:8px;padding:10px 0;border-bottom:1px solid var(--br);}
+.st-day-item{display:flex;align-items:center;gap:8px;padding:7px 0;border-bottom:1px solid var(--br);}
 .st-day-item:last-child{border-bottom:none;}
 .st-day-date{font-size:12px;color:var(--t2);min-width:52px;flex-shrink:0;}
 .st-day-bar-bg{flex:1;height:7px;background:var(--b4);border-radius:4px;overflow:hidden;}
@@ -270,7 +270,7 @@ input[type=range]{width:100%;accent-color:var(--ac);}
 </div>
 
 <!-- MAIN APP -->
-<div id="mscr" class="scr" style="display:none;flex-direction:column;height:100vh;height:100dvh;">
+<div id="mscr" class="scr" style="display:none;flex-direction:column;height:100vh;">
   <div id="tb">
     <div class="tbt">Slov<span>ník</span></div>
     <div id="stk" class="badge">🔥 <span id="stkn">0</span></div>
@@ -313,6 +313,9 @@ input[type=range]{width:100%;accent-color:var(--ac);}
         <div class="md" id="deep-desc">Deep Learn (3× richtig)</div>
       </button>
     </div>
+    <div class="dvd"></div>
+    <div class="stit" data-i18n="freqWords">Häufige Vokabeln</div>
+    <div id="fwc"></div>
     <div class="vtag">Slovník</div>
   </div>
 
@@ -431,10 +434,8 @@ input[type=range]{width:100%;accent-color:var(--ac);}
     </div>
     <div class="card">
       <div class="stit" id="st-chart-title">Gelernte Wörter</div>
-      <div class="st-chart-wrap" id="st-chart-wrap">
-        <div class="st-bar-chart" id="st-bar-chart"></div>
-        <div class="st-xlbls" id="st-xlbls"></div>
-      </div>
+      <div class="st-bar-chart" id="st-bar-chart"></div>
+      <div class="st-xlbls" id="st-xlbls"></div>
     </div>
     <div class="st-detail" id="st-detail" style="display:none;"></div>
     <div class="card">
@@ -442,7 +443,7 @@ input[type=range]{width:100%;accent-color:var(--ac);}
       <div id="st-day-list"></div>
     </div>
     <div class="dvd"></div>
-    <div class="card" style="padding-bottom:24px;margin-bottom:32px;">
+    <div class="card">
       <div class="stit" data-i18n="srsLevels">SRS-Stufen</div>
       <div class="srs-ch" id="srsch2"></div>
       <div class="sleg" id="sleg"></div>
@@ -474,7 +475,7 @@ input[type=range]{width:100%;accent-color:var(--ac);}
 <div id="spo"></div>
 
 <script>
-/* Slovník v6.21 */
+/* Slovník v6.9 */
 // Entfernt einen evtl. hängenden alten Service Worker + Cache aus früheren Versionen,
 // da diese Version selbst keinen Service Worker mehr registriert.
 if('serviceWorker' in navigator){
@@ -482,7 +483,7 @@ if('serviceWorker' in navigator){
 }
 if(window.caches){caches.keys().then(keys=>keys.forEach(k=>caches.delete(k)));}
 
-const VER='6.21';
+const VER='6.9';
 const SK={v:'sv6_vocab',log:'sv6log',langs:'sv6langs',pair:'sv6pair',set:'sv6set',tut:'sv6tut',hid:'sv6_hidden',tc:l=>`sv6_tc_${l}`,tf:l=>`sv6_tf_${l}`};
 
 /* ── I18N ── */
@@ -493,7 +494,9 @@ de:{
   tabLearn:'Lernen',tabAdd:'Hinzufügen',tabList:'Vokabeln',tabPacks:'Packs',tabStats:'Statistik',due:'fällig',
   totalVocab:'Vokabeln',dueToday:'Fällig heute',srsDist:'SRS-Verteilung',new:'Neu',learned:'Gelernt ✓',
   learnMode:'Lernmodus',quick:'Schnell lernen',quickSub:'Zufälliger Kartenmodus',deep:'Gezielt üben',
-  deepDesc:n=>`Deep Learn (${n}× richtig)`,allDone:'Alle erledigt! 🎉',dueSuffix:'Vokabeln fällig',
+  deepDesc:n=>`Deep Learn (${n}× richtig)`,freqWords:'Häufige Vokabeln',allDone:'Alle erledigt! 🎉',dueSuffix:'Vokabeln fällig',
+  freqOnlyDe:'Häufige Vokabeln nur für Deutsch (Muttersprache).',freqAllLearned:'Alle häufigen Vokabeln gelernt! 🎉',
+  learnBtnPlus:'+ Lernen',page:n=>`Seite ${n}`,
   newVocab:'Neue Vokabel',article:'Artikel',nativeLang:'Muttersprache',foreignLang:'Fremdsprache',
   synonyms:'Synonyme (kommagetrennt)',note:'Notiz / Eselsbrücke',notePh:'Eselsbrücke…',
   addBtn:'✓ Hinzufügen',alreadyExistsWarn:'⚠️ Vokabel bereits vorhanden',natPh:'z. B. Hund',forPh:'Übersetzung…',
@@ -553,7 +556,9 @@ en:{
   tabLearn:'Learn',tabAdd:'Add',tabList:'Vocabulary',tabPacks:'Packs',tabStats:'Stats',due:'due',
   totalVocab:'Words',dueToday:'Due today',srsDist:'SRS distribution',new:'New',learned:'Learned ✓',
   learnMode:'Learning mode',quick:'Quick learn',quickSub:'Random card mode',deep:'Focused practice',
-  deepDesc:n=>`Deep learn (${n}× correct)`,allDone:'All done! 🎉',dueSuffix:'words due',
+  deepDesc:n=>`Deep learn (${n}× correct)`,freqWords:'Common words',allDone:'All done! 🎉',dueSuffix:'words due',
+  freqOnlyDe:'Common words only for German (native language).',freqAllLearned:'All common words learned! 🎉',
+  learnBtnPlus:'+ Learn',page:n=>`Page ${n}`,
   newVocab:'New word',article:'Article',nativeLang:'Native language',foreignLang:'Foreign language',
   synonyms:'Synonyms (comma-separated)',note:'Note / mnemonic',notePh:'Mnemonic…',
   addBtn:'✓ Add',alreadyExistsWarn:'⚠️ Word already exists',natPh:'e.g. dog',forPh:'Translation…',
@@ -613,7 +618,9 @@ sk:{
   tabLearn:'Učiť sa',tabAdd:'Pridať',tabList:'Slovíčka',tabPacks:'Balíčky',tabStats:'Štatistika',due:'na opakovanie',
   totalVocab:'Slovíčka',dueToday:'Dnes na opakovanie',srsDist:'Rozdelenie SRS',new:'Nové',learned:'Naučené ✓',
   learnMode:'Režim učenia',quick:'Rýchle učenie',quickSub:'Náhodný režim kariet',deep:'Cielené učenie',
-  deepDesc:n=>`Hlboké učenie (${n}× správne)`,allDone:'Všetko hotovo! 🎉',dueSuffix:'slovíčok na opakovanie',
+  deepDesc:n=>`Hlboké učenie (${n}× správne)`,freqWords:'Časté slovíčka',allDone:'Všetko hotovo! 🎉',dueSuffix:'slovíčok na opakovanie',
+  freqOnlyDe:'Časté slovíčka len pre nemčinu (materinský jazyk).',freqAllLearned:'Všetky časté slovíčka naučené! 🎉',
+  learnBtnPlus:'+ Učiť sa',page:n=>`Strana ${n}`,
   newVocab:'Nové slovíčko',article:'Člen',nativeLang:'Materinský jazyk',foreignLang:'Cudzí jazyk',
   synonyms:'Synonymá (oddelené čiarkou)',note:'Poznámka / pomôcka',notePh:'Pomôcka na zapamätanie…',
   addBtn:'✓ Pridať',alreadyExistsWarn:'⚠️ Slovíčko už existuje',natPh:'napr. pes',forPh:'Preklad…',
@@ -688,12 +695,26 @@ function applyI18N(){
 const SRS_D=[0,1,7,30,60,180,365,Infinity];
 function SRS_N(){return I18N[S.ui]?.srsNames||I18N.de.srsNames;}
 const SRS_C=['#ef4444','#f97316','#f59e0b','#84cc16','#22c55e','#06b6d4','#6366f1','#a855f7'];
+const FREQ=[
+  'sein','haben','werden','können','müssen','sagen','machen','gehen','kommen','sehen',
+  'Jahr','Zeit','Mensch','Hand','Kind','Frau','Mann','Haus','Land','Tag',
+  'groß','gut','neu','alt','klein','erste','letzte','viel','wenig','lang',
+  'und','oder','aber','wenn','weil','dass','damit','obwohl','jedoch','also',
+  'ich','du','er','sie','wir','ihr','mich','dich','ihn','uns',
+  'in','an','auf','mit','von','zu','aus','bei','nach','für',
+  'wollen','sollen','dürfen','mögen','lassen','denken','wissen','fühlen','lieben','helfen',
+  'finden','verlieren','bringen','geben','nehmen','öffnen','schließen','warten','spielen','singen',
+  'Arbeit','Schule','Straße','Auto','Geld','Preis','Frage','Antwort','Problem','Lösung',
+  'Freund','Familie','Leben','Welt','Weg','Seite','Ende','Anfang','Mitte','Teil',
+  'schön','schnell','langsam','wichtig','richtig','falsch','möglich','leicht','schwer','interessant',
+];
 
 let S={
   ui:'de',
   set:{theme:'dark',tts:true,repeatN:3},
   langs:[],pair:null,
   vocab:[],sf:'all',pf:'all',
+  freqPage:0,freqHid:[],
   packCache:{},
 };
 let LS=null;
@@ -707,6 +728,8 @@ function init(){
   const langs=lg(SK.langs);
   if(langs) S.langs=langs;
   const pair=lg(SK.pair);
+  const hid=lg(SK.hid);
+  if(hid) S.freqHid=hid;
   if(!langs||langs.length===0){showScr('obscr');}
   else{
 
@@ -806,6 +829,7 @@ function renderHome(){
     ?`<span style="color:var(--g)">${t('allDone')}</span>`
     :`<strong>${due}</strong> ${t('dueSuffix')}`;
   renderSRS('srsch');
+  renderFreq();
   updateDeepDesc();
 }
 
@@ -816,7 +840,7 @@ function renderSRS(id){
   S.vocab.forEach(v=>c[Math.min(v.stage||0,7)]++);
   const mx=Math.max(...c,1);
   el.innerHTML=c.map((n,i)=>`<div class="srs-bw">
-    <div class="srs-b" style="height:${Math.round((n/mx)*94)+6}px;background:${SRS_C[i]};" title="${SRS_N()[i]}: ${n}"></div>
+    <div class="srs-b" style="height:${Math.round((n/mx)*54)+4}px;background:${SRS_C[i]};" title="${SRS_N()[i]}: ${n}"></div>
     <div class="srs-bl">${n}</div></div>`).join('');
 }
 
@@ -1881,15 +1905,8 @@ function impData(ev){
    ════════════════════════════════ */
 let stTime=7,stMetric='words',stMetricColor='var(--ac)',stSelDay=-1;
 
-function getDataSpanDays(){
-  const log=lg(SK.log)||[];
-  let earliest=Date.now();
-  log.forEach(e=>{const tt=logT(e);if(tt<earliest)earliest=tt;});
-  S.vocab.forEach(v=>{if(v.created&&v.created<earliest)earliest=v.created;});
-  return Math.min(365,Math.max(1,Math.round((dayKey(Date.now())-dayKey(earliest))/86400000)+1));
-}
-function stSlice(){return stTime>0?buildDayData(stTime):(getDataSpanDays()>186?buildMonthData(getDataSpanDays()):buildDayData(getDataSpanDays()));}
-function stFmt(d){return d.weekday?`${d.weekday}, ${d.label}`:d.label;}
+function stSlice(){return stTime>0?buildDayData(stTime):buildDayData(365);}
+function stFmt(d){return `${d.weekday}, ${d.label}`;}
 
 function renderStats(){
   renderSRS('srsch2');
@@ -1974,12 +1991,10 @@ function renderStBars(slice){
   const chart=document.getElementById('st-bar-chart');
   const xl=document.getElementById('st-xlbls');
   const showEvery=Math.ceil(slice.length/7)||1;
-  chart.style.width='';
-  xl.style.width='';
 
   chart.innerHTML=slice.map((d,i)=>{
     const v=vals[i];
-    const h=v>0?Math.max(6,Math.round(v/max*135)):4;
+    const h=v>0?Math.max(5,Math.round(v/max*100)):3;
     const isSel=stSelDay===i;
     const barColor=v===0?'var(--b4)':stMetricColor;
     return `<div class="st-bar-col${isSel?' sel-col':''}" onclick="clickStBar(${i})">
@@ -2039,7 +2054,7 @@ function renderStList(slice){
       :(stMetric==='correct'||stMetric==='wrong')?`${d.ratio}%`
       :`${d.words} ${t('mWords')}`;
     return `<div class="st-day-item" style="${stSelDay===i?'background:var(--b3);border-radius:6px;padding:7px 6px;':''}">
-      <div class="st-day-date">${d.weekday?d.weekday+', ':''}${d.label}</div>
+      <div class="st-day-date">${d.weekday}, ${d.label}</div>
       <div class="st-day-bar-bg"><div class="st-day-bar-fill" style="width:${pct}%;background:${stMetricColor};"></div></div>
       <div class="st-day-num" style="color:${stMetricColor}">${v}${ST_UNIT[stMetric]}</div>
       <div class="st-day-extra">${extra}</div>
@@ -2103,38 +2118,36 @@ function buildDayData(nDays){
   return days;
 }
 
-function buildMonthData(spanDays){
-  const log=lg(SK.log)||[];
-  const nMonths=Math.min(13,Math.ceil(spanDays/30)+1);
-  const now=new Date();
-  const months=[];
-  for(let i=nMonths-1;i>=0;i--){
-    const d=new Date(now.getFullYear(),now.getMonth()-i,1);
-    months.push({
-      y:d.getFullYear(),m:d.getMonth(),
-      label:`${String(d.getMonth()+1).padStart(2,'0')}/${String(d.getFullYear()).slice(2)}`,
-      weekday:'',
-      words:0,correct:0,wrong:0,new:0,attempts:0,_wset:new Set(),
-    });
-  }
-  const idx=new Map(months.map((mo,i)=>[`${mo.y}-${mo.m}`,i]));
-  log.forEach(e=>{
-    const dt=new Date(logT(e));
-    const i=idx.get(`${dt.getFullYear()}-${dt.getMonth()}`);if(i===undefined)return;
-    months[i].attempts++;
-    const w=typeof e==='object'?e.w:null;
-    if(w) months[i]._wset.add(w); else months[i].words++;
-    if((typeof e==='object'?e.ok:true)) months[i].correct++; else months[i].wrong++;
-  });
-  months.forEach(mo=>{mo.words+=mo._wset.size;delete mo._wset;});
-  S.vocab.forEach(v=>{
-    if(!v.created)return;
-    const dt=new Date(v.created);
-    const i=idx.get(`${dt.getFullYear()}-${dt.getMonth()}`);if(i===undefined)return;
-    months[i].new++;
-  });
-  months.forEach(mo=>{mo.ratio=mo.attempts>0?Math.round(mo.correct/mo.attempts*100):0;});
-  return months;
+/* ════════════════════════════════
+   FREQUENT WORDS
+   ════════════════════════════════ */
+const FPG=60;
+function renderFreq(){
+  const c=document.getElementById('fwc');if(!c)return;
+  const p=S.pair;
+  if(!p||p.native!=='de'){c.innerHTML=`<div style="font-size:13px;color:var(--t3);">${t('freqOnlyDe')}</div>`;return;}
+  const vis=FREQ.filter(w=>!S.freqHid.includes(w)&&!S.vocab.find(v=>v.native.toLowerCase()===w.toLowerCase()));
+  const pages=Math.ceil(vis.length/FPG);
+  const pg=Math.max(0,Math.min(S.freqPage,pages-1));S.freqPage=pg;
+  const slice=vis.slice(pg*FPG,(pg+1)*FPG);
+  if(!vis.length){c.innerHTML=`<div style="font-size:13px;color:var(--g)">${t('freqAllLearned')}</div>`;return;}
+  c.innerHTML=`<div class="card" style="padding:0 16px;">${slice.map(w=>`
+    <div style="display:flex;align-items:center;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--br);gap:10px;">
+      <div style="font-size:14px;font-weight:600;">${esc(w)}</div>
+      <div style="display:flex;gap:4px;flex-shrink:0;">
+        <button class="btn bp bsm" onclick="addFreqW('${esc(w)}')">${t('learnBtnPlus')}</button>
+        <button class="btn bs bsm" onclick="hideFreqW('${esc(w)}')">✕</button>
+      </div>
+    </div>`).join('')}</div>
+  ${pages>1?`<div class="prow"><button class="pbtn" onclick="freqPg(-1)">‹</button><span class="pinf">${t('page')(pg+1)}/${pages}</span><button class="pbtn" onclick="freqPg(1)">›</button></div>`:''}`;
+}
+
+function freqPg(d){S.freqPage=Math.max(0,S.freqPage+d);renderFreq();}
+function hideFreqW(w){S.freqHid.push(w);ls(SK.hid,S.freqHid);renderFreq();}
+async function addFreqW(w){
+  tab('add');document.getElementById('add-nat').value=w;
+  await fetchTrans(w);
+  toast(t('needTranslCheck')(w));
 }
 
 /* ════════════════════════════════
